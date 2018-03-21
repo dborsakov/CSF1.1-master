@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -36,11 +38,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int todaynumber = 1;
     int dd = 0;
     int ddn = 0;
+    int id = 0;
     int sj = 0;
     boolean b;
     String ddk;
     TextView txt;
-
+    ImageView imageView;
     TextView dtxt;
 
     @Override
@@ -54,55 +57,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         thu = (Button)findViewById(R.id.Thu);
         fri = (Button)findViewById(R.id.Fri);
         txt = (TextView)findViewById(R.id.textView3) ;
+        txt = (TextView)findViewById(R.id.textView3) ;
 
-//        Time dayofweek = new Time();
-//        int dow = dayofweek.getDayOfWeek();
-//        Resources res = getResources();
-//        switch (dow){
-//            case 1:
-//                setTitle(res.getString(R.string.tue));
-//                get_JSON(todaynumber);
-//                break;
-//            case 2:
-//                setTitle(res.getString(R.string.wen));
-//                get_JSON(todaynumber);
-//                break;
-//            case 3:
-//                setTitle(res.getString(R.string.thu));
-//                get_JSON(todaynumber);
-//                break;
-//            case 4:
-//                setTitle(res.getString(R.string.fri));
-//                get_JSON(todaynumber);
-//                break;
-//            case 5:
-//                setTitle("Выходной");
-//                break;
-//            case 6:
-//                setTitle("Выходной");
-//                break;
-//
-//        }
+        imageView = (ImageView)findViewById(R.id.imageView3);
 
 
 
 
-//        //debug
+
+
 //
+        Time time = new Time(12, 2, 2018);
+        int a = time.getTypeOfWeek();
+
+        if(a==0) {
+            txt.setText("Числитель");
+        }
+        if(a==1) {
+            txt.setText("Знаменатель");
+        }
 //
-//        dtxt = findViewById(R.id.tvtow);
-//
-//        Time time = new Time(12, 2, 2018);
-//        int a = time.getTypeOfWeek();
-//
-//        if(a==0) {
-//            dtxt.setText("числитель");
-//        }
-//        if(a==1) {
-//            dtxt.setText("знаменатель");
-//        }
-//
-//        //---
+
 
 
         tue.setOnClickListener(this);
@@ -110,7 +85,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         thu.setOnClickListener(this);
         fri.setOnClickListener(this);
 
-        get_JSON(todaynumber);
+        int dayOfWeek = time.getDayOfWeek();
+        Resources res = getResources();
+        String weekend = "Выходной";
+        switch (dayOfWeek){
+            case 1: get_JSON(7);
+                break;
+
+            case 2: get_JSON(7);
+                break;
+
+            case 3: setTitle(res.getString(R.string.tue));
+                get_JSON(dayOfWeek);
+                break;
+            case 4: setTitle(res.getString(R.string.wen));
+                get_JSON(dayOfWeek);
+                break;
+            case 5: setTitle(res.getString(R.string.thu));
+                get_JSON(dayOfWeek);
+                break;
+            case 6: setTitle(res.getString(R.string.fri));
+                get_JSON(dayOfWeek);
+                break;
+            case 7: get_JSON(7);
+                break;
+
+        }
     }
 
 
@@ -121,19 +121,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view){
         Resources res = getResources();
         switch (view.getId()){
-            case R.id.Tue: todaynumber = 1;
+            case R.id.Tue: todaynumber = 3;
             setTitle(res.getString(R.string.tue));
             get_JSON(todaynumber);
             break;
-            case R.id.Wed: todaynumber = 2;
+            case R.id.Wed: todaynumber = 4;
             setTitle(res.getString(R.string.wen));
             get_JSON(todaynumber);
             break;
-            case R.id.Thu: todaynumber = 3;
+            case R.id.Thu: todaynumber = 5;
             setTitle(res.getString(R.string.thu));
             get_JSON(todaynumber);
             break;
-            case  R.id.Fri: todaynumber = 4;
+            case  R.id.Fri: todaynumber = 6;
             setTitle(res.getString(R.string.fri));
             get_JSON(todaynumber);
             break;
@@ -149,45 +149,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String name = "";
         String place = "";
         String time = "";
+        int id ;
         long day;
 
 
         try {
 
-            Time timek = new Time();
-            dd = timek.main();
-            if (dd%7!=0 && b){
-                do {
-                    dd--;
-                    ddn = dd;
-                } while (dd%7==0);
-                sj = ddn/7;
-                if (sj%2==0){
-                    txt.setText("Числитель");
+            Time timek = new Time(12, 2, 2018);
+//            dd = timek.main();
+//            if (dd%7!=0 && b){
+//                do {
+//                    dd--;
+//                    ddn = dd;
+//                } while (dd%7==0);
+//                sj = ddn/7;
+//                if (sj%2==0){
+//                    txt.setText("Числитель");
+//
+//                }
+//                else {
+//                    txt.setText("Знаменатель");
+//
+//                }
+//            }
+//            else{
+//                if (sj%2==0){
+//                    txt.setText("Числитель");
+//
+//                }
+//                else {
+//                    txt.setText("Знаменатель");
+//
+//                }
+//            }
 
-                }
-                else {
-                    txt.setText("Знаменатель");
-
-                }
-            }
-            else{
-                if (sj%2==0){
-                    txt.setText("Числитель");
-
-                }
-                else {
-                    txt.setText("Знаменатель");
-
-                }
-            }
 
 
 
-            String d = "timetable.json";
 
             if (timek.getTypeOfWeek()==0) {
-                InputStream is = getAssets().open(d);
+                InputStream is = getAssets().open("timetable.json");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     place = object.getString("place");
                     time = object.getString("startTime");
                     day = object.getLong("day");
-
+                    id = object.getInt("id");
 
                     if (day == k) {
                         HashMap<String, String> subject = new HashMap<>();
@@ -225,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 listView.setAdapter(adapter);
 
             }
-            else {
+            else if (timek.getTypeOfWeek()==1){
                 InputStream is = getAssets().open("timetablez.json");
                 int size = is.available();
                 byte[] buffer = new byte[size];
@@ -246,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     place = object.getString("place");
                     time = object.getString("startTime");
                     day = object.getLong("day");
-
+                    id = object.getInt("id");
 
                     if (day == k) {
                         HashMap<String, String> subject = new HashMap<>();
